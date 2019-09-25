@@ -1,0 +1,26 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Symbol</th>
+      <th>Current Price</th>
+      <% if @user.id == current_user.id %>
+        <th>Actions</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @user_funds.each do |user_fund| %>
+      <tr>
+        <td><%= user_fund.name %></td>
+        <td><%= user_fund.ticker %></td>
+        <td><%= user_fund.last_price %></td>
+        <% if @user.id == current_user.id %>
+          <td><%= link_to "Delete This Stock", user_fund_path(user_fund), method: :delete,
+                                               data: {confirm: "Are you sure?"},
+                                               class: "btn btn-xs btn-danger" %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

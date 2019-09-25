@@ -1,0 +1,2 @@
+module UserFundsHelper
+end

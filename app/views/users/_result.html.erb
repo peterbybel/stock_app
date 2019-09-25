@@ -1,11 +1,26 @@
-<div class="results-block">
-  <%= bootstrap_flash %>
-</div>
+<% if params[:action] == 'search' %>
+  <div class="results-block">
+    <%= bootstrap_flash %>
+  </div>
+<% end %>
 
 <% if @fund %>
   <div class="well results-block">
     <strong>Symbol: </strong><%= @fund.ticker %>
     <strong>Name: </strong><%= @fund.name %>
     <strong>Price: </strong><%= @fund.last_price %>
+    <% if current_user.can_add_fund?(@fund.ticker) %>
+      <%= link_to "Add to My Stocks", user_funds_path(user: current_user, fund_ticker: @fund.ticker),
+                                      class: "btn btn-xs btn-success", method: :post %>
+    <% else %>
+      <span class="label label-default">
+        Stock cannot be added because you have already added
+        <% if !current_user.under_fund_limit? %>
+          10 stocks
+        <% end %>
+        <% if current_user.fund_already_added?(@fund.ticker) %>
+          this stock
+        <% end %>
+    <% end %>
   </div>
 <% end %>
